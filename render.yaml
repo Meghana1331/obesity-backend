@@ -2,6 +2,9 @@ services:
   - type: web
     name: obesity-backend
     env: python
-    buildCommand: ""
-    startCommand: python app.py
     plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    environment:
+      - key: PYTHON_VERSION
+        value: 3.10
