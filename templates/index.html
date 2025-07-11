@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obesity Prediction App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 6px;
+            width: 250px;
+        }
+        button {
+            padding: 8px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Obesity Level Prediction</h2>
+    <form method="post" action="/predict">
+        <label>Gender:</label><br>
+        <select name="Gender" required>
+            <option value="">--Select--</option>
+            <option value="Male" {% if request.form.get('Gender') == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if request.form.get('Gender') == 'Female' %}selected{% endif %}>Female</option>
+        </select><br>
+
+        <label>Age (in years):</label><br>
+        <input type="number" step="any" name="Age" value="{{ request.form.get('Age', '') }}" required><br>
+
+        <label>Height (in meters):</label><br>
+        <input type="number" step="any" name="Height" value="{{ request.form.get('Height', '') }}" required><br>
+
+        <label>Weight (in kg):</label><br>
+        <input type="number" step="any" name="Weight" value="{{ request.form.get('Weight', '') }}" required><br>
+
+        <label>Family History with Overweight:</label><br>
+        <select name="family_history_with_overweight" required>
+            <option value="">--Select--</option>
+            <option value="yes" {% if request.form.get('family_history_with_overweight') == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if request.form.get('family_history_with_overweight') == 'no' %}selected{% endif %}>No</option>
+        </select><br>
+
+        <label>Frequent consumption of high caloric food (FAVC):</label><br>
+        <select name="FAVC" required>
+            <option value="">--Select--</option>
+            <option value="yes" {% if request.form.get('FAVC') == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if request.form.get('FAVC') == 'no' %}selected{% endif %}>No</option>
+        </select><br>
+
+        <label>Frequency of vegetable consumption (FCVC):</label><br>
+        <input type="number" step="any" name="FCVC" value="{{ request.form.get('FCVC', '') }}" required><br>
+
+        <label>Number of main meals (NCP):</label><br>
+        <input type="number" step="any" name="NCP" value="{{ request.form.get('NCP', '') }}" required><br>
+
+        <label>Consumption of food between meals (CAEC):</label><br>
+        <select name="CAEC" required>
+            <option value="">--Select--</option>
+            <option value="no" {% if request.form.get('CAEC') == 'no' %}selected{% endif %}>No</option>
+            <option value="Sometimes" {% if request.form.get('CAEC') == 'Sometimes' %}selected{% endif %}>Sometimes</option>
+            <option value="Frequently" {% if request.form.get('CAEC') == 'Frequently' %}selected{% endif %}>Frequently</option>
+            <option value="Always" {% if request.form.get('CAEC') == 'Always' %}selected{% endif %}>Always</option>
+        </select><br>
+
+        <label>Do you smoke (SMOKE):</label><br>
+        <select name="SMOKE" required>
+            <option value="">--Select--</option>
+            <option value="yes" {% if request.form.get('SMOKE') == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if request.form.get('SMOKE') == 'no' %}selected{% endif %}>No</option>
+        </select><br>
+
+        <label>Consumption of water daily (CH2O):</label><br>
+        <input type="number" step="any" name="CH2O" value="{{ request.form.get('CH2O', '') }}" required><br>
+
+        <label>Calories consumption monitoring (SCC):</label><br>
+        <select name="SCC" required>
+            <option value="">--Select--</option>
+            <option value="yes" {% if request.form.get('SCC') == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if request.form.get('SCC') == 'no' %}selected{% endif %}>No</option>
+        </select><br>
+
+        <label>Physical activity frequency (FAF):</label><br>
+        <input type="number" step="any" name="FAF" value="{{ request.form.get('FAF', '') }}" required><br>
+
+        <label>Time using technology devices daily (TUE):</label><br>
+        <input type="number" step="any" name="TUE" value="{{ request.form.get('TUE', '') }}" required><br>
+
+        <label>Consumption of alcohol (CALC):</label><br>
+        <select name="CALC" required>
+            <option value="">--Select--</option>
+            <option value="no" {% if request.form.get('CALC') == 'no' %}selected{% endif %}>No</option>
+            <option value="Sometimes" {% if request.form.get('CALC') == 'Sometimes' %}selected{% endif %}>Sometimes</option>
+            <option value="Frequently" {% if request.form.get('CALC') == 'Frequently' %}selected{% endif %}>Frequently</option>
+            <option value="Always" {% if request.form.get('CALC') == 'Always' %}selected{% endif %}>Always</option>
+        </select><br>
+
+        <label>Mode of transportation (MTRANS):</label><br>
+        <select name="MTRANS" required>
+            <option value="">--Select--</option>
+            <option value="Automobile" {% if request.form.get('MTRANS') == 'Automobile' %}selected{% endif %}>Automobile</option>
+            <option value="Bike" {% if request.form.get('MTRANS') == 'Bike' %}selected{% endif %}>Bike</option>
+            <option value="Motorbike" {% if request.form.get('MTRANS') == 'Motorbike' %}selected{% endif %}>Motorbike</option>
+            <option value="Public_Transportation" {% if request.form.get('MTRANS') == 'Public_Transportation' %}selected{% endif %}>Public Transportation</option>
+            <option value="Walking" {% if request.form.get('MTRANS') == 'Walking' %}selected{% endif %}>Walking</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <h3>{{ prediction_text }}</h3>
+    {% endif %}
+</body>
+</html>
