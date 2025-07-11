@@ -20,10 +20,22 @@ def predict_json():
             return jsonify({"error": "❌ No input data provided."}), 400
 
         df = pd.DataFrame([data])
-        prediction = model.predict(df)
+
+        # One-hot encode input to match training
+        df_encoded = pd.get_dummies(df)
+
+        # Align columns with training data
+        model_features = model.feature_name_
+        for col in model_features:
+            if col not in df_encoded.columns:
+                df_encoded[col] = 0
+        df_encoded = df_encoded[model_features]
+
+        prediction = model.predict(df_encoded)
         predicted_class = label_encoder.inverse_transform(prediction)[0]
 
         return jsonify({"prediction": predicted_class})
+
     except Exception as e:
         return jsonify({"error": f"❌ Error during prediction: {str(e)}"}), 400
 
